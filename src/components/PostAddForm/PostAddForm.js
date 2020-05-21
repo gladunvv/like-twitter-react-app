@@ -9,7 +9,7 @@ export const PostAddForm = () => {
         placeholder='О чём вы думаете?'
         className='form-control new-post-label'
       ></input>
-      <button type='submit' className='btn btn-outline-secondeary'>
+      <button type='submit' className='btn btn-outline-secondary'>
         Добавить
       </button>
     </form>
