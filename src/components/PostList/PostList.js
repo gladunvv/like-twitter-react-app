@@ -3,12 +3,15 @@ import { PostListItem } from '../PostListItem';
 
 import './PostList.scss';
 
-export const PostList = () => {
-  return (
-    <ul className='app-list list-group'>
-      <PostListItem />
-      <PostListItem />
-      <PostListItem />
-    </ul>
-  );
+export const PostList = ({ posts }) => {
+  const elements = posts.map((item) => {
+    const { id, ...itemProps } = item;
+    return (
+      <li key={id} className='list-group-item'>
+        <PostListItem {...itemProps} />
+      </li>
+    );
+  });
+
+  return <ul className='app-list list-group'>{elements}</ul>;
 };
