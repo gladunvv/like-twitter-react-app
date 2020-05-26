@@ -15,6 +15,7 @@ export class App extends Component {
       { label: 'My new application', like: false, important: false, id: 3 },
     ],
     term: '',
+    filter: 'all',
   };
 
   maxId = 4;
@@ -82,6 +83,18 @@ export class App extends Component {
     });
   };
 
+  filterPost = (items, filter) => {
+    if (filter === 'like') {
+      return items.filter((item) => item.like);
+    } else {
+      return items;
+    }
+  };
+
+  onFilterSelect = (filter) => {
+    this.setState({ filter });
+  };
+
   searchPost = (items, term) => {
     if (term.length === 0) {
       return items;
@@ -97,16 +110,19 @@ export class App extends Component {
   };
 
   render() {
-    const { data, term } = this.state;
+    const { data, term, filter } = this.state;
     const liked = data.filter((item) => item.like).length;
     const allPosts = data.length;
-    const visiblePosts = this.searchPost(data, term);
+    const visiblePosts = this.filterPost(this.searchPost(data, term), filter);
     return (
       <div className='app'>
         <AppHeader liked={liked} allPosts={allPosts} />
         <div className='search-panel d-flex'>
           <SearchPanel onUpdateSearch={this.onUpdateSearch} />
-          <PostStatusFilter />
+          <PostStatusFilter
+            filter={filter}
+            onFilterSelect={this.onFilterSelect}
+          />
         </div>
         <PostList
           posts={visiblePosts}
