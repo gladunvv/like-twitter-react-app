@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import './SearchPanel.scss';
 
-export const SearchPanel = () => {
-  return (
-    <input
-      className='form-control search-input'
-      type='text'
-      placeholder='Поиск по записям'
-    />
-  );
-};
+export class SearchPanel extends Component {
+  state = {
+    term: '',
+  };
+
+  onUpdateSearch = (event) => {
+    const term = event.target.value;
+    this.setState({ term });
+    this.props.onUpdateSearch(term)
+  };
+
+  render() {
+    return (
+      <input
+        className='form-control search-input'
+        type='text'
+        placeholder='Поиск по записям'
+        onChange={this.onUpdateSearch}
+      />
+    );
+  }
+}

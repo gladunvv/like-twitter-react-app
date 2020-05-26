@@ -14,6 +14,7 @@ export class App extends Component {
       { label: 'Hello world!', like: false, important: false, id: 2 },
       { label: 'My new application', like: false, important: false, id: 3 },
     ],
+    term: '',
   };
 
   maxId = 4;
@@ -81,19 +82,34 @@ export class App extends Component {
     });
   };
 
+  searchPost = (items, term) => {
+    if (term.length === 0) {
+      return items;
+    }
+
+    return items.filter((item) => {
+      return item.label.indexOf(term) > -1;
+    });
+  };
+
+  onUpdateSearch = (term) => {
+    this.setState({ term });
+  };
+
   render() {
-    const { data } = this.state;
+    const { data, term } = this.state;
     const liked = data.filter((item) => item.like).length;
     const allPosts = data.length;
+    const visiblePosts = this.searchPost(data, term);
     return (
       <div className='app'>
         <AppHeader liked={liked} allPosts={allPosts} />
         <div className='search-panel d-flex'>
-          <SearchPanel />
+          <SearchPanel onUpdateSearch={this.onUpdateSearch} />
           <PostStatusFilter />
         </div>
         <PostList
-          posts={this.state.data}
+          posts={visiblePosts}
           onDelete={this.deleteItem}
           onToggleImportant={this.onToggleImportant}
           onToggleLiked={this.onToggleLiked}
